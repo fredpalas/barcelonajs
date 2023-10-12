@@ -1,0 +1,7 @@
+services:
+  Apps.Todo.Backend.controllers.ListPutController:
+    class: ../../controllers/ListPutController
+    arguments: ['@Todo.Shared.domain.CommandBus']
+  Apps.Todo.Backend.controllers.ListsGetController:
+    class: ../../controllers/ListsGetController
+    arguments: ['@Todo.Shared.domain.QueryBus']

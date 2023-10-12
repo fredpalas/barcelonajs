@@ -6,6 +6,7 @@ IMAGE_NAME := codelytv/typescript-ddd-skeleton
 SERVICE_NAME := app
 MOOC_APP_NAME := mooc
 BACKOFFICE_APP_NAME := backoffice
+TODO_APP_NAME := todo
 
 # Test if the dependencies we need to run this Makefile are installed
 DOCKER := $(shell command -v docker)

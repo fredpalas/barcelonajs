@@ -1,0 +1,86 @@
+services:
+  Shared.Logger:
+    class: ../../../../../Contexts/Shared/infrastructure/WinstonLogger
+    arguments: []
+
+  Todo.Shared.MongoConfig:
+    factory:
+      class: ../../../../../Contexts/Todo/Shared/infrastructure/persistence/mongo/MongoConfigFactory
+      method: 'createConfig'
+
+  Todo.Shared.ConnectionManager:
+    factory:
+      class: ../../../../../Contexts/Shared/infrastructure/persistence/mongo/MongoClientFactory
+      method: 'createClient'
+    arguments: ['todo', '@Todo.Shared.MongoConfig']
+
+  Todo.Shared.TypeOrmConnection:
+    factory:
+      class: ../../../../../Contexts/Shared/infrastructure/persistence/typeorm/TypeOrmClientFactory
+      method: 'createClient'
+    arguments: ['todo', '@Todo.Shared.TypeOrmConfig']
+
+  Todo.Shared.TypeOrmConfig:
+    factory:
+      class: ../../../../../Contexts/Todo/Shared/infrastructure/persistence/postgre/TypeOrmConfigFactory
+      method: 'createConfig'
+  
+  Todo.Shared.CommandHandlers:
+    class: ../../../../../Contexts/Shared/infrastructure/CommandBus/CommandHandlers
+    arguments: ['!tagged commandHandler']
+
+  Todo.Shared.domain.CommandBus:
+    class: ../../../../../Contexts/Shared/infrastructure/CommandBus/InMemoryCommandBus
+    arguments: ['@Todo.Shared.CommandHandlers']
+
+  Todo.Shared.RabbitMQConfig:
+    factory:
+      class: ../../../../../Contexts/Todo/Shared/infrastructure/RabbitMQ/RabbitMQConfigFactory
+      method: 'createConfig'
+
+  Todo.Shared.domain.EventBus:
+    factory:
+      class: ../../../../../Contexts/Todo/Shared/infrastructure/RabbitMQ/RabbitMQEventBusFactory
+      method: 'create'
+    arguments:
+      [
+        '@Todo.Shared.DomainEventFailoverPublisher',
+        '@Todo.Shared.RabbitMQConnection',
+        '@Todo.Shared.RabbitMQqueueFormatter',
+        '@Todo.Shared.RabbitMQConfig'
+      ]
+
+  Todo.Shared.RabbitMQQueueFormatter:
+    class: ../../../../../Contexts/Shared/infrastructure/EventBus/RabbitMq/RabbitMQqueueFormatter
+    arguments: ['todo']
+
+  Todo.Shared.RabbitMQConnection:
+    class: ../../../../../Contexts/Shared/infrastructure/EventBus/RabbitMq/RabbitMqConnection
+    arguments: ['@Todo.Shared.RabbitMQConfig']
+
+  Todo.Shared.RabbitMQqueueFormatter:
+    class: ../../../../../Contexts/Shared/infrastructure/EventBus/RabbitMq/RabbitMQqueueFormatter
+    arguments: ['todo']
+
+  Todo.Shared.DomainEventFailoverPublisher:
+    class: ../../../../../Contexts/Shared/infrastructure/EventBus/DomainEventFailoverPublisher/DomainEventFailoverPublisher
+    arguments: ['@Todo.Shared.ConnectionManager']
+  
+  Todo.Shared.QueryHandlers:
+    class: ../../../../../Contexts/Shared/infrastructure/QueryBus/QueryHandlers
+    arguments: ['!tagged queryHandler']
+
+  Todo.Shared.domain.QueryBus:
+    class: ../../../../../Contexts/Shared/infrastructure/QueryBus/InMemoryQueryBus
+    arguments: ['@Todo.Shared.QueryHandlers']
+
+#  Todo.Shared.ElasticConfig:
+#    factory:
+#      class: ../../../../../Contexts/Shared/Courses/infrastructure/persistence/ElasticConfigFactory
+#      method: 'createConfig'
+#
+#  Todo.Shared.ElasticConnectionManager:
+#    factory:
+#      class: ../../../../../Contexts/Shared/infrastructure/persistence/elasticsearch/ElasticClientFactory
+#      method: 'createClient'
+#    arguments: ['Todo', '@Todo.Shared.ElasticConfig']

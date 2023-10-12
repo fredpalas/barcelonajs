@@ -1,0 +1,24 @@
+services:
+    Todo.List.domain.ListRepository:
+        class: ../../../../../Contexts/Todo/List/infrastructure/persistence/TypeOrmListRepository
+        arguments: [ '@Todo.Shared.TypeOrmConnection' ]
+
+    Todo.List.application.ListCreator:
+        class: ../../../../../Contexts/Todo/List/application/Create/ListCreator
+        arguments: [ '@Todo.List.domain.ListRepository', '@Todo.Shared.domain.EventBus' ]
+
+    Todo.list.CreateListCommandHandler:
+        class: ../../../../../Contexts/Todo/List/application/Create/CreateListCommandHandler
+        arguments: [ '@Todo.List.application.ListCreator' ]
+        tags:
+            - { name: 'commandHandler' }
+
+    Todo.List.application.ListsFinder:
+        class: ../../../../../Contexts/Todo/List/application/Find/ListsFinder
+        arguments: [ '@Todo.List.domain.ListRepository' ]
+
+    Todo.list.FindListsQueryHandler:
+        class: ../../../../../Contexts/Todo/List/application/Find/ListsQueryHandler
+        arguments: [ '@Todo.List.application.ListsFinder' ]
+        tags:
+            - { name: 'queryHandler' }

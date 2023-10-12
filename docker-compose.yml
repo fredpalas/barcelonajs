@@ -12,9 +12,9 @@ services:
   postgres:
     image: postgres
     environment:
-      - POSTGRES_PASSWORD=codely
-      - POSTGRES_USER=codely
-      - POSTGRES_DB=mooc-backend-dev
+      - POSTGRES_PASSWORD=todo
+      - POSTGRES_USER=todo
+      - POSTGRES_DB=todo
     ports:
       - '5432:5432'
     restart: always

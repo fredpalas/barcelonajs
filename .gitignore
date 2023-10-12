@@ -1,7 +1,13 @@
 node_modules/
 dist/
 .tmp
+.idea/
 logs/
 data
 test-results.xml
-/src/Contexts/Mooc/Courses/infrastructure/persistence/courses.*.repo
+node_modules
+.env
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out

@@ -5,7 +5,6 @@ import { CommandNotRegisteredError } from '../../domain/CommandNotRegisteredErro
 export class CommandHandlers extends Map<Command, CommandHandler<Command>> {
   constructor(commandHandlers: Array<CommandHandler<Command>>) {
     super();
-
     commandHandlers.forEach(commandHandler => {
       this.set(commandHandler.subscribedTo(), commandHandler);
     });

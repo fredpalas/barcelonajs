@@ -60,7 +60,7 @@ export class RabbitMQConsumer {
   private hasBeenRedeliveredTooMuch(message: ConsumeMessage) {
     if (this.hasBeenRedelivered(message)) {
       const count = parseInt(message.properties.headers['redelivery_count']);
-      return count >= this.maxRetries;
+      return count >= this.maxRetries.valueOf();
     }
     return false;
   }

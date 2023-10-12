@@ -1,10 +1,9 @@
-import { Connection, createConnection, getConnection } from 'typeorm';
+import {DataSource} from 'typeorm';
 import { TypeOrmConfig } from './TypeOrmConfig';
-
 export class TypeOrmClientFactory {
-  static async createClient(contextName: string, config: TypeOrmConfig): Promise<Connection> {
+  static async createClient(contextName: string, config: TypeOrmConfig): Promise<DataSource> {
     try {
-      const connection = await createConnection({
+      const connection = new DataSource({
         name: contextName,
         type: 'postgres',
         host: config.host,
@@ -12,14 +11,25 @@ export class TypeOrmClientFactory {
         username: config.username,
         password: config.password,
         database: config.database,
-        entities: [__dirname + '/../../../../**/**/infrastructure/persistence/typeorm/*{.js,.ts}'],
+        entities: config.entities ?? [],
         synchronize: true,
-        logging: true
+        logging: true,
       });
-
-      return connection;
+      return await connection.initialize();
     } catch (error) {
-      return getConnection(contextName);
+      console.log(error);
+      return await new DataSource({
+        name: contextName,
+        type: 'postgres',
+        host: config.host,
+        port: config.port,
+        username: config.username,
+        password: config.password,
+        database: config.database,
+        entities: config.entities ?? [],
+        synchronize: true,
+        logging: true,
+      }).initialize();
     }
   }
 }

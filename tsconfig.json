@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "esModuleInterop": true,
-    "target": "es6",
+    "target": "es2017",
     "noImplicitAny": true,
     "moduleResolution": "node",
     "sourceMap": false,
@@ -10,15 +10,37 @@
     "strict": true,
     "noEmit": false,
     "resolveJsonModule": true,
-    "noUnusedLocals": true,
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "declaration": true,
+    "strictNullChecks": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": false,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
+    "paths": {
+      "@/Contexts/*": [
+        "./src/Contexts/*"
+      ],
+      "@/apps/*": [
+        "./src/apps/*"
+      ],
+    }
   },
   "include": [
     "src/**/**.ts",
-    "tests/**/**.ts"
   ],
   "exclude": [
     "node_modules",
-    "src/apps/backoffice/frontend"
+    "src/apps/backoffice/frontend",
+    "src/apps/Todo/frontend",
+    "tests/*",
+    "bin/*",
+    "lib/*"
   ]
 }

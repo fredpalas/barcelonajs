@@ -1,4 +1,4 @@
-import { RabbitMqConnection } from '../../../../../../src/Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMqConnection';
+import { RabbitMqConnection } from '../../../../../../src/Contexts/Shared/infrastructure/EventBus/RabbitMq/RabbitMqConnection';
 
 export class RabbitMQConnectionDouble extends RabbitMqConnection {
 
