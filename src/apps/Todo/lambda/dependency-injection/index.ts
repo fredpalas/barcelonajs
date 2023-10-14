@@ -118,7 +118,7 @@ container
   .addArgument(new Reference('Todo.Shared.QueryHandlers'));
 
 container
-  .register('Apps.Todo.Backend.controllers.ListPutController', ListsPutController)
+  .register('Apps.Todo.Backend.controllers.ListsPutController', ListsPutController)
   .addArgument(new Reference('Todo.Shared.domain.CommandBus'));
 container
   .register('Apps.Todo.Backend.controllers.ListsGetController', ListsGetController)

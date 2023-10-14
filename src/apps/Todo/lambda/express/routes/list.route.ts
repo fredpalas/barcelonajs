@@ -7,7 +7,7 @@ import { ListDeleteController } from "@/apps/Todo/backend/controllers/ListDelete
 
 export const register = (app: Express) => {
   const listsPutController: ListsPutController = container.get(
-    'Apps.Todo.Backend.controllers.ListPutController'
+    'Apps.Todo.Backend.controllers.ListsPutController'
   );
   const listsGetController: ListsGetController = container.get(
     'Apps.Todo.Backend.controllers.ListsGetController'
