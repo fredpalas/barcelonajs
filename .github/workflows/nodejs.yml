@@ -8,17 +8,17 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 15.x]
+        node-version: [16.x, 18.x]
 #        mongodb-version: [4.2]
 #        elasticsearch-version: ['7.9.3']
 #        rabbitmq-version: ['3.8.2-management-alpine']
 
     steps:
-#      - uses: actions/checkout@v1
-#      - name: Use Node.js ${{ matrix.node-version }}
-#        uses: actions/setup-node@v1
-#        with:
-#          node-version: ${{ matrix.node-version }}
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 #      - name: Launch MongoDB
 #        uses: wbari/start-mongoDB@v0.2
 #        with:
