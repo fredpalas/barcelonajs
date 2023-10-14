@@ -64,4 +64,8 @@ export class ListCreatedDomainEvent extends DomainEvent {
       occurredOn,
     });
   }
+
+  getTitle(): string {
+    return this.title;
+  }
 }

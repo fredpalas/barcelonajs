@@ -1,10 +1,10 @@
 import { Express } from 'express';
 import container from '../dependency-injection';
-import {ListPutController} from '../controllers/ListPutController';
+import {ListsPutController} from '../controllers/ListsPutController';
 import {ListsGetController} from "../controllers/ListsGetController";
 
 export const register = (app: Express) => {
-  const coursesPostController: ListPutController = container.get(
+  const coursesPostController: ListsPutController = container.get(
     'Apps.Todo.Backend.controllers.ListPutController'
   );
   const listsGetController: ListsGetController = container.get(

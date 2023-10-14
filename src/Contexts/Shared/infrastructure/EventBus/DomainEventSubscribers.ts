@@ -16,4 +16,10 @@ export class DomainEventSubscribers {
 
     return new DomainEventSubscribers(subscribers);
   }
+
+  getSubscribersFor(event: DomainEvent): Array<DomainEventSubscriber<DomainEvent>> {
+    return this.items.filter(subscriber => {
+      return subscriber.subscribedTo().some(subscribedEvent => subscribedEvent.EVENT_NAME === event.eventName);
+    });
+  }
 }

@@ -108,6 +108,32 @@ const moocConfig = convict({
       env: 'RABBITMQ_RETRY_TTL',
       default: 1000
     }
+  },
+  nodemailer: {
+    host: {
+      doc: 'The SMTP host',
+      format: String,
+      env: 'NODEMAILER_HOST',
+      default: 'smtp.ethereal.email'
+    },
+    port: {
+      doc: 'The SMTP port',
+      format: Number,
+      env: 'NODEMAILER_PORT',
+      default: 587
+    },
+    username: {
+      doc: 'The SMTP username',
+      format: String,
+      env: 'NODEMAILER_USERNAME',
+      default: 'username'
+    },
+    password: {
+      doc: 'The SMTP password',
+      format: String,
+      env: 'NODEMAILER_PASSWORD',
+      default: 'password'
+    }
   }
 });
 

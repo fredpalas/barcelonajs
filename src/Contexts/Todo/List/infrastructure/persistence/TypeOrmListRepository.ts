@@ -15,10 +15,11 @@ export class TypeOrmListRepository extends TypeOrmRepository<List> implements Li
     return this.persist(list);
   }
 
-  public async search(id: ListId): Promise<Nullable<List>> {
+  public async search(id: ListId): Promise<List|null> {
     const repository = await this.repository();
-
-    const list = await repository.findOne({ where: {id: id.value} });
+    console.log(id.value);
+    // @ts-ignore
+    const list = await repository.findOneBy({ id: id });
 
     return list ?? null;
   }
@@ -29,4 +30,10 @@ export class TypeOrmListRepository extends TypeOrmRepository<List> implements Li
     return  await repository.find();
   }
 
+  public async delete(id: ListId): Promise<void> {
+    const repository = await this.repository();
+
+    // @ts-ignore
+    await repository.delete({ id });
+  }
 }

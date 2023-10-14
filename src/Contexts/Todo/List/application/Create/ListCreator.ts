@@ -4,10 +4,12 @@ import {ListType} from "../../domain/ListType";
 import {ListId} from "../../domain/ListId";
 import {ListTitle} from "../../domain/ListTitle";
 import {ListDescription} from "../../domain/ListDescription";
+import { EventBus } from "@/Contexts/Shared/domain/EventBus";
 
 export class ListCreator {
   constructor(
-    private readonly repository: ListRepository
+    private readonly repository: ListRepository,
+    private readonly eventBus: EventBus
   ) {
   }
 
@@ -26,8 +28,8 @@ export class ListCreator {
       description,
       type
     )
-    //await this.repository.save(list);
-    //await this.eventBus.publish(list.pullDomainEvents())
+    await this.repository.save(list);
+    await this.eventBus.publish(list.pullDomainEvents())
 
     return list;
   }

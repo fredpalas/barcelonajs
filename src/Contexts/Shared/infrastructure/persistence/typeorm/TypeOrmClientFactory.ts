@@ -17,7 +17,6 @@ export class TypeOrmClientFactory {
       });
       return await connection.initialize();
     } catch (error) {
-      console.log(error);
       return await new DataSource({
         name: contextName,
         type: 'postgres',

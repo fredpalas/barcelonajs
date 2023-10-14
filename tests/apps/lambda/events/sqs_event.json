@@ -1,0 +1,20 @@
+{
+  "Records": [
+    {
+      "messageId": "19dd0b57-b21e-4ac1-bd88-01bbb068cb78",
+      "receiptHandle": "MessageReceiptHandle",
+      "body": "{\"Type\":\"Notification\",\"MessageId\" : \"d94e212a-c632-535d-a58c-7c8e51d0346c\",\"TopicArn\":\"arn:aws:sns:eu-central-1:612809547142:LambdaStack-snsTodo5400E46A-oZLl4JngjK38\",\t\"Message\" : \"{\\\"data\\\":{\\\"id\\\":\\\"8c1b6819-2720-4d06-be63-182d6e005d13\\\",\\\"type\\\":\\\"list.created\\\",\\\"occurred_on\\\":\\\"2023-10-14T13:20:33.658Z\\\",\\\"aggregateId\\\":\\\"8e4e3098-8429-419d-ae8d-483da34011e5\\\",\\\"attributes\\\":{\\\"title\\\":\\\"todo\\\",\\\"description\\\":\\\"holas que haceas asdhkjsahdksahd asdjsaljd\\\",\\\"type\\\":\\\"NOTE\\\",\\\"createdAt\\\":\\\"2023-10-14T13:20:33.658Z\\\",\\\"updatedAt\\\":\\\"2023-10-14T13:20:33.658Z\\\"}}}\",\"Timestamp\" : \"2023-10-14T13:20:34.144Z\",\"SignatureVersion\" : \"1\",\"Signature\" : \"ZGkl/MHUNyjmupQ29J+7wxw5OrlpzLB0iNPEknk5B0j2Yuu3uJoU0ro/is0M3Xht6HrO3UJNRzox4xnS+sgAXC9agfaIl2oyOVYhZCuP+t2h7W9Wk96pjBeDNpTyzWBaWWi3oNQqfoov4S5OPyfhECUmyHAbFlth9yQUtvf3bF4UgOvTC3AGOtU6CN48ADiqRF+b+vAMvLw5DQlEtTgGv+KZbEJZNJ9MQy9LH7YngkQQS151zc3jiszPGGZZhUE+xcOgBRhJZfqrYDjKY/tvRcKPw8CLWalDvUthYgCzW2Tsyw8M6FvcsWFwZJXhTzILEffnmjcD3sKy8F4/asFhTA==\",\"SigningCertURL\" : \"https://sns.eu-central-1.amazonaws.com/SimpleNotificationService-01d088a6f77103d0fe307c0069e40ed6.pem\",\"UnsubscribeURL\" : \"https://sns.eu-central-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:eu-central-1:612809547142:LambdaStack-snsTodo5400E46A-oZLl4JngjK38:2d26d94c-741e-4747-b047-a71e31f01ecc\"}",
+      "attributes": {
+        "ApproximateReceiveCount": "1",
+        "SentTimestamp": "1523232000000",
+        "SenderId": "123456789012",
+        "ApproximateFirstReceiveTimestamp": "1523232000001"
+      },
+      "messageAttributes": {},
+      "md5OfBody": "7b270e59b47ff90a553787216d55d91d",
+      "eventSource": "aws:sqs",
+      "eventSourceARN": "arn:aws:sqs:us-east-1:123456789012:MyQueue",
+      "awsRegion": "eu-central-1"
+    }
+  ]
+}
