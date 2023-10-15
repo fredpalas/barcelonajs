@@ -14,10 +14,7 @@
     "lambda": "src/apps/lambda/bin/lambda.js"
   },
   "scripts": {
-    "dev:mooc:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/mooc/backend/start.ts",
-    "dev:backoffice:frontend": "cd ./src/apps/backoffice/frontend && npm start",
-    "dev:backoffice:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules ./src/apps/backoffice/backend/start.ts",
-    "dev:todo:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules ./src/apps/Todo/backend/start.ts",
+    "dev:todo:backend": "NODE_ENV=dev ts-node-dev -r tsconfig-paths/register --ignore-watch node_modules ./src/apps/Todo/backend/start.ts",
     "lint": "prettier --write src/**/*.ts{,x}",
     "test": "npm run test:unit && npm run test:features",
     "test:unit": "NODE_ENV=test jest",
@@ -115,7 +112,8 @@
     "ts-jest": "^28.0.5",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "tsconfig-paths": "^4.2.0"
   },
   "husky": {
     "hooks": {

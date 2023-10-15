@@ -1,11 +1,11 @@
-{
-  "extends": "./tsconfig.json",
-  "exclude": [
-    "node_modules",
-    "node_modules/*",
-    "src/apps/backoffice/frontend",
-    "src/apps/Todo/frontend",
-    "bin/*",
-    "lib/*"
-  ]
-}
+//{
+//  "extends": "./tsconfig.json",
+//  "exclude": [
+//    "node_modules",
+//    "node_modules/*",
+//    "src/apps/backoffice/frontend",
+//    "src/apps/Todo/frontend",
+//    "bin/*",
+//    "lib/*"
+//  ]
+//}

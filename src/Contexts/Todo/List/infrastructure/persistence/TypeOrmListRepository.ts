@@ -2,7 +2,6 @@ import {TypeOrmRepository} from "../../../../Shared/infrastructure/persistence/t
 import {ListRepository} from "../../domain/ListRepository";
 import List from "../../domain/List";
 import {EntitySchema} from "typeorm";
-import {Nullable} from "../../../../Shared/domain/Nullable";
 import {ListEntity} from "./typeorm/ListEntity";
 import {ListId} from "../../domain/ListId";
 

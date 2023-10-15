@@ -17,12 +17,45 @@ interface ServerlessStackProps extends cdk.StackProps {
   vendor: string;
   minify: boolean;
 }
+let dependencies = [
+  'node-dependency-injection',
+  'bodybuilder',
+  'body-parser',
+  'express',
+  'express-promise-router',
+  'express-validator',
+  'compression',
+  'errorhandler',
+  'helmet',
+  'http-status',
+  'cors',
+  'glob',
+  'typeorm',
+  'uuid',
+  'uuid-validate',
+  'yargs-parser',
+  'lodash.clonedeep',
+  'convict',
+  '@vendia/serverless-express',
+  'logform',
+  'colors',
+  'triple-beam',
+  'safe-stable-stringify',
+  'ms',
+  'fecha',
+  'winston',
+  'util-deprecate',
+  'winston-transport',
+  'inherits',
+  'safe-buffer',
+  '@aws-sdk/client-sns',
+  'nodemailer',
+];
 
 export class LambdaStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: ServerlessStackProps) {
     super(scope, id, props);
     const {minify, vendor} = props;
-
 
     const deadLetterQueue = new Queue(this, "LambdaDQL", {
       queueName: `sqs_${vendor}_dql`,
@@ -38,80 +71,44 @@ export class LambdaStack extends cdk.Stack {
       visibilityTimeout: cdk.Duration.minutes(3),
     });
 
-    // new cdk.CfnOutput(this, 'application_integration', {
-    //   value: queue.queueArn,
-    //   exportName: Fn.importValue(queueName),
-    // });
-
     const topic = new Topic(this, `sns_${vendor}`, {
       displayName: `SNS Messenger for ${vendor}`
     });
     topic.addSubscription(new SqsSubscription(queue));
     const arn = topic.topicArn;
+    const environment = {
+      NODE_ENV: 'dev',
+      TYPEORM_HOST: process.env.TYPEORM_HOST || 'localhost',
+      TYPEORM_PORT: '5432',
+      TYPEORM_USERNAME: 'postgres',
+      TYPEORM_PASSWORD: process.env.TYPEORM_PASSWORD || '',
+      TYPEORM_DATABASE: 'postgres',
+      TOPIC_ARN: arn.toString(),
+      NODEMAILER_HOST: process.env.NODEMAILER_HOST || '',
+      NODEMAILER_PORT: process.env.NODEMAILER_PORT || '',
+      NODEMAILER_USERNAME: process.env.NODEMAILER_USERNAME || '',
+      NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD || '',
+    };
+    const commandHooks = {
+      afterBundling: (inputDir: string, outputDir: string): string[] => [
+        `npx copy '${inputDir}/src/Contexts/Todo/Shared/infrastructure/config/*.{json,yaml,html,png}' ${outputDir}`,
+      ],
+      beforeBundling: (inputDir: string, outputDir: string): string[] => [],
+      beforeInstall: (inputDir: string, outputDir: string): string[] => [],
+    };
     const SqsFunction = new NodejsFunction(this, `sqs_${vendor}`, {
       bundling: {
         externalModules: [],
         minify,
-        nodeModules: [
-          'node-dependency-injection',
-          'bodybuilder',
-          'body-parser',
-          'express',
-          'express-promise-router',
-          'express-validator',
-          'compression',
-          'errorhandler',
-          'helmet',
-          'http-status',
-          'cors',
-          'glob',
-          'typeorm',
-          'uuid',
-          'uuid-validate',
-          'yargs-parser',
-          'lodash.clonedeep',
-          'convict',
-          '@vendia/serverless-express',
-          'logform',
-          'colors',
-          'triple-beam',
-          'safe-stable-stringify',
-          'ms',
-          'fecha',
-          'winston',
-          'util-deprecate',
-          'winston-transport',
-          'inherits',
-          'safe-buffer',
-          '@aws-sdk/client-sns',
-          'nodemailer',
-        ],
-        commandHooks: {
-          afterBundling: (inputDir: string, outputDir: string): string[] => [
-            `npx copy '${inputDir}/src/Contexts/Todo/Shared/infrastructure/config/*.{json,yaml,html,png}' ${outputDir}`,
-          ],
-          beforeBundling: (inputDir: string, outputDir: string): string[] => [],
-          beforeInstall: (inputDir: string, outputDir: string): string[] => [],
-        },
+        nodeModules: dependencies,
+        commandHooks: commandHooks
       },
       timeout: cdk.Duration.seconds(60),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: lambda.Runtime.NODEJS_18_X,
       handler: 'main',
       functionName: `SQS_handler_${vendor}`,
       entry: path.join(__dirname, `../src/apps/Todo/lambda/sqs/index.ts`),
-      environment: {
-        NODE_ENV: 'dev',
-        TYPEORM_HOST: process.env.TYPEORM_HOST || 'localhost',
-        TYPEORM_PORT: '5432',
-        TYPEORM_USERNAME: 'postgres',
-        TYPEORM_PASSWORD: process.env.TYPEORM_PASSWORD || '',
-        TYPEORM_DATABASE: 'postgres',
-        TOPIC_ARN: arn.toString(),
-        NODEMAILER_HOST: process.env.NODEMAILER_HOST || '',
-        NODEMAILER_PORT: process.env.NODEMAILER_PORT || '',
-        NODEMAILER_USERNAME: process.env.NODEMAILER_USERNAME || '',
-        NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD || '',
-      }
+      environment,
     });
     const eventSource = new SqsEventSource(queue);
     SqsFunction.addEventSource(eventSource);
@@ -120,71 +117,21 @@ export class LambdaStack extends cdk.Stack {
       bundling: {
         externalModules: [],
         minify,
-        nodeModules: [
-          'node-dependency-injection',
-          'bodybuilder',
-          'body-parser',
-          'express',
-          'express-promise-router',
-          'express-validator',
-          'compression',
-          'errorhandler',
-          'helmet',
-          'http-status',
-          'cors',
-          'glob',
-          'typeorm',
-          'uuid',
-          'uuid-validate',
-          'yargs-parser',
-          'lodash.clonedeep',
-          'convict',
-          '@vendia/serverless-express',
-          'logform',
-          'colors',
-          'triple-beam',
-          'safe-stable-stringify',
-          'ms',
-          'fecha',
-          'winston',
-          'util-deprecate',
-          'winston-transport',
-          'inherits',
-          'safe-buffer',
-          '@aws-sdk/client-sns',
-          'nodemailer',
-        ],
-        commandHooks: {
-          afterBundling: (inputDir: string, outputDir: string): string[] => [
-            `npx copy '${inputDir}/src/Contexts/Todo/Shared/infrastructure/config/*.{json,yaml,html,png}' ${outputDir}`,
-          ],
-          beforeBundling: (inputDir: string, outputDir: string): string[] => [],
-          beforeInstall: (inputDir: string, outputDir: string): string[] => [],
-        },
+        nodeModules: dependencies,
+        commandHooks: commandHooks
       },
       timeout: cdk.Duration.seconds(60),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: lambda.Runtime.NODEJS_18_X,
       handler: 'main',
       functionName: `Express_handler_${vendor}`,
       entry: path.join(__dirname, `../src/apps/Todo/lambda/express/index.ts`),
-      environment: {
-        NODE_ENV: 'dev',
-        TYPEORM_HOST: process.env.TYPEORM_HOST || 'localhost',
-        TYPEORM_PORT: '5432',
-        TYPEORM_USERNAME: 'postgres',
-        TYPEORM_PASSWORD: process.env.TYPEORM_PASSWORD || '',
-        TYPEORM_DATABASE: 'postgres',
-        TOPIC_ARN: arn.toString(),
-        NODEMAILER_HOST: process.env.NODEMAILER_HOST || '',
-        NODEMAILER_PORT: process.env.NODEMAILER_PORT || '',
-        NODEMAILER_USERNAME: process.env.NODEMAILER_USERNAME || '',
-        NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD || '',
-      }
+      environment,
     });
 
     new apigateway.LambdaRestApi(this, 'Gateway', {
       handler: expressFunction,
     });
+
     topic.grantPublish(SqsFunction);
     topic.grantPublish(expressFunction);
   }

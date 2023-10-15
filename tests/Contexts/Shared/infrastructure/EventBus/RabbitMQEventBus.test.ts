@@ -42,7 +42,7 @@ describe('RabbitMQEventBus test', () => {
         queueNameFormatter,
         maxRetries: 3
       });
-      const event = CoursesCounterIncrementedDomainEventMother.create();
+      const event = DomainEventDummyMother.random();
 
       await eventBus.publish([event]);
 

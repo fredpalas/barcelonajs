@@ -1,6 +1,6 @@
 import { TypeOrmConfig } from '../../../../../Shared/infrastructure/persistence/typeorm/TypeOrmConfig';
 import config from '../../config';
-import List from "@/Contexts/Todo/List/domain/List";
+import List from "../../../../List/domain/List";
 
 export class TypeOrmConfigFactory {
   static createConfig(): TypeOrmConfig {

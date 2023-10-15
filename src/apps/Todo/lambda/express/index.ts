@@ -9,12 +9,13 @@ import httpStatus from "http-status";
 import { registerRoutes } from "./routes";
 import serverlessExpress from '@vendia/serverless-express';
 import container from "@/apps/Todo/lambda/dependency-injection";
+import { register } from "@/apps/Todo/lambda/dependency-injection/express";
 
 let serverlessExpressInstance: any;
 export async function main (event: any, context: any)  {
-
+  register(container);
   const main = express();
-  const logger =  container.get('Shared.Logger');
+  const logger =  container.get('Shared.Logger')
   main.use(bodyParser.json());
   main.use(bodyParser.urlencoded({ extended: true }));
   main.use(helmet.xssFilter());

@@ -1,7 +1,16 @@
 services:
-  Apps.Todo.Backend.controllers.ListPutController:
-    class: ../../controllers/ListPutController
+  Apps.Todo.Backend.controllers.ListsPutController:
+    class: ../../controllers/ListsPutController
     arguments: ['@Todo.Shared.domain.CommandBus']
   Apps.Todo.Backend.controllers.ListsGetController:
     class: ../../controllers/ListsGetController
     arguments: ['@Todo.Shared.domain.QueryBus']
+  Apps.Todo.Backend.controllers.ListPutController:
+    class: ../../controllers/ListPutController
+    arguments: ['@Todo.Shared.domain.CommandBus']
+  Apps.Todo.Backend.controllers.ListGetController:
+    class: ../../controllers/ListGetController
+    arguments: ['@Todo.Shared.domain.QueryBus']
+  Apps.Todo.Backend.controllers.ListDeleteController:
+    class: ../../controllers/ListDeleteController
+    arguments: ['@Todo.Shared.domain.CommandBus']

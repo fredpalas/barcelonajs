@@ -1,8 +1,9 @@
-import { Connection, EntityMetadata } from 'typeorm';
+import { EntityMetadata } from 'typeorm';
 import { EnvironmentArranger } from '../arranger/EnvironmentArranger';
+import { DataSource } from "typeorm/data-source/DataSource";
 
 export class TypeOrmEnvironmentArranger extends EnvironmentArranger {
-  constructor(private _client: Promise<Connection>) {
+  constructor(private _client: Promise<DataSource>) {
     super();
   }
 
@@ -27,11 +28,11 @@ export class TypeOrmEnvironmentArranger extends EnvironmentArranger {
     return (await this._client).entityMetadatas;
   }
 
-  protected client(): Promise<Connection> {
+  protected client(): Promise<DataSource> {
     return this._client;
   }
 
   public async close(): Promise<void> {
-    return (await this.client()).close();
+    return (await this.client()).destroy();
   }
 }
