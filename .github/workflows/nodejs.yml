@@ -8,7 +8,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [18.x]
         mongodb-version: [4.2]
         elasticsearch-version: ['7.9.3']
         rabbitmq-version: ['3.8.2-management-alpine']
@@ -34,8 +34,7 @@ jobs:
           postgres_image_tag: ${{ matrix.postgresql-version }}
           app_user: todo
           app_user_password: todo
-          app_db: todo
-          postgres_extensions: uuid-ossp ltree
+          app_db: todo_test
       - name: Configure sysctl limits
         run: |
           sudo swapoff -a
