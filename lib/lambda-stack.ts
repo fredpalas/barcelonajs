@@ -9,14 +9,13 @@ import { Queue } from "aws-cdk-lib/aws-sqs";
 import { SqsEventSource } from "aws-cdk-lib/aws-lambda-event-sources";
 import { SqsSubscription } from "aws-cdk-lib/aws-sns-subscriptions";
 import { Topic } from "aws-cdk-lib/aws-sns";
-import { Fn } from "aws-cdk-lib";
 dotenv.config();
 
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
 interface ServerlessStackProps extends cdk.StackProps {
   vendor: string;
   minify: boolean;
 }
+// External dependencies
 let dependencies = [
   'node-dependency-injection',
   'bodybuilder',
@@ -56,11 +55,12 @@ export class LambdaStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: ServerlessStackProps) {
     super(scope, id, props);
     const {minify, vendor} = props;
-
+    // Create a new dead letter queue with default properties
     const deadLetterQueue = new Queue(this, "LambdaDQL", {
       queueName: `sqs_${vendor}_dql`,
     });
     const queueName= `sqs_${vendor}`;
+    // Create a new queue with default properties and dead letter queue configured above
     const queue = new Queue(this, `LambdaSQS`, {
       queueName: queueName,
       deadLetterQueue: {
@@ -70,12 +70,15 @@ export class LambdaStack extends cdk.Stack {
       retentionPeriod: cdk.Duration.minutes(10),
       visibilityTimeout: cdk.Duration.minutes(3),
     });
-
+    // Create a new topic to receive messages published to it
     const topic = new Topic(this, `sns_${vendor}`, {
       displayName: `SNS Messenger for ${vendor}`
     });
+    // Subscribe the queue to the topic
     topic.addSubscription(new SqsSubscription(queue));
+    // Get the ARN of the topic
     const arn = topic.topicArn;
+    // Create a new lambda function with default properties and add the topic ARN to the environment variables
     const environment = {
       NODE_ENV: 'dev',
       TYPEORM_HOST: process.env.TYPEORM_HOST || 'localhost',
@@ -89,6 +92,7 @@ export class LambdaStack extends cdk.Stack {
       NODEMAILER_USERNAME: process.env.NODEMAILER_USERNAME || '',
       NODEMAILER_PASSWORD: process.env.NODEMAILER_PASSWORD || '',
     };
+    // Create command hooks we need to run before and after bundling, to have files necessary to run the application
     const commandHooks = {
       afterBundling: (inputDir: string, outputDir: string): string[] => [
         `npx copy '${inputDir}/src/Contexts/Todo/Shared/infrastructure/config/*.{json,yaml,html,png}' ${outputDir}`,
@@ -96,6 +100,7 @@ export class LambdaStack extends cdk.Stack {
       beforeBundling: (inputDir: string, outputDir: string): string[] => [],
       beforeInstall: (inputDir: string, outputDir: string): string[] => [],
     };
+    // Create a new lambda function with default properties and add the queue to the environment variables for SQS
     const SqsFunction = new NodejsFunction(this, `sqs_${vendor}`, {
       bundling: {
         externalModules: [],
@@ -110,9 +115,10 @@ export class LambdaStack extends cdk.Stack {
       entry: path.join(__dirname, `../src/apps/Todo/lambda/sqs/index.ts`),
       environment,
     });
+    // Add the queue as an event source for the lambda function
     const eventSource = new SqsEventSource(queue);
     SqsFunction.addEventSource(eventSource);
-
+    // Create a new NodeJS lambda function with default properties and add the topic to the environment variables, api gateway
     const expressFunction = new NodejsFunction(this, `express_${vendor}`, {
       bundling: {
         externalModules: [],
@@ -127,12 +133,13 @@ export class LambdaStack extends cdk.Stack {
       entry: path.join(__dirname, `../src/apps/Todo/lambda/express/index.ts`),
       environment,
     });
-
+    // Create a new API Gateway with default properties and add the lambda function as the handler
     new apigateway.LambdaRestApi(this, 'Gateway', {
       handler: expressFunction,
     });
-
+    // Grant the lambda function permissions to publish to the topic from SQS
     topic.grantPublish(SqsFunction);
+    // Grant the lambda function permissions to publish to the topic from Express
     topic.grantPublish(expressFunction);
   }
 }

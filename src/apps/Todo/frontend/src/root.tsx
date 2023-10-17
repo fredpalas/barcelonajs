@@ -1,9 +1,10 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, useVisibleTask$ } from "@builder.io/qwik";
 import {
   QwikCityProvider,
   RouterOutlet,
   ServiceWorkerRegister,
 } from "@builder.io/qwik-city";
+import { initFlowbite } from "flowbite";
 import { RouterHead } from "./components/router-head/router-head";
 
 import "./global.css";
@@ -15,6 +16,9 @@ export default component$(() => {
    *
    * Don't remove the `<head>` and `<body>` elements.
    */
+  useVisibleTask$(() => {
+    initFlowbite();
+  });
 
   return (
     <QwikCityProvider>
@@ -24,7 +28,7 @@ export default component$(() => {
         <RouterHead />
         <ServiceWorkerRegister />
       </head>
-      <body lang="en">
+      <body  class={"dark"} lang="en">
         <RouterOutlet />
       </body>
     </QwikCityProvider>
